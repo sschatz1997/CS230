@@ -2,16 +2,12 @@
 #include <string>
 #include <cctype>
 #include <cstring>
-#include <cstdio>	
+#include <cstdio>
+#include <stdlib.h>
 #include <fstream>
 #include "BallInfo.h"
 using namespace std;
 using std::string;
-//main program
-//diameter == ball_mm
-//IDnumber == ball_ID
-//ballColor == ball_color
-//ballTexture == ball_texture
 
 int menu()
 {
@@ -24,7 +20,7 @@ int menu()
 		<<"\t5. Show all smooth ball entries \n"
 		<<"\t6. Show all rough ball entries\n"
 		<<"\t7. Find a ball based on its ID\n"
-		<<"\b\t8. file I/O testing\n"
+		<<"\t8. How many balls of a specific color are in the database?\n"
 		<<"\t10. exit\n";
 	cin >> choice;
 	return choice;
@@ -35,35 +31,39 @@ void writeToFile(double mm, string id, string col, string tx)
 	//http://www.cplusplus.com/doc/tutorial/files/
 	/*
 	file output guide
-	[
 	ball_mm
 	ball_id
 	ball_color
 	ball_texture
-	] 
-	these [] represent one entry set
 	*/
-	ofstream theFile;
-	theFile.open("mainFile.txt", std::ios_base::app);
+	ofstream stringsFile;
+	stringsFile.open("strings.txt", std::ios_base::app);
 	//opens in appened mode
-	if (theFile.is_open())
+	if (stringsFile.is_open())
 	{
-		theFile << "[\n";
-		theFile << mm << "\n";
-		theFile << id << "\n";
-		theFile << col << "\n";
-		theFile	<< tx << "\n";
-		theFile	<< "]\n";
-		theFile.close();
+	//	theFile << mm << "\n";
+		stringsFile << id << "\n";
+		stringsFile << col << "\n";
+		stringsFile	<< tx << "\n";
 	}
-	else cout<< "ERROR: file i/o";
+	stringsFile.close();
+	//sencond file because of double
+	ofstream doubleFile;
+	doubleFile.open("double.txt", std::ios_base::app);
+	if (doubleFile.is_open())
+	{
+		doubleFile << id << "\n";
+	}
+	doubleFile.close();
+//	else cout<< "ERROR: file i/o";
+	
 }
 
 int numberOfLines()
 {
 	int lines = 0;
 	string line;
-	ifstream theFile("mainFile.txt");
+	ifstream theFile("strings.txt");
 	while (getline(theFile, line))
 	{
 		++lines;
@@ -76,45 +76,76 @@ void readFromFile(BallInfo* blPTR, int count)
 	//http://www.cplusplus.com/forum/beginner/8388/
 	//need to make two files one for string then the second for double
 	
-	string STRING, id[50], col[50], tx[50], t[50], main[50];
-	double mm[50];
+	string STRING, main[50], temp[50], line, t, tm, pusher[50];
+	string tID, tColor, tText;
+	double mm[50], tMM;
 	short loop=0;
-	int lines, x;
+	int lines, x, i, q;
 	string l;
 	lines = numberOfLines();
+	int math = count * 4;
 	x = 0;
-	ifstream theFile("mainFile.txt");
-	if (theFile.is_open())
+	i = 0;
+	q = 0;
+	ifstream stringsFile("strings.txt");
+	
+	if (stringsFile.is_open())
 	{
-		while(!theFile.eof())
+		while(!stringsFile.eof())
 		{
-			getline(theFile,l);
-		//	cout<<STRING;
-			main[loop] = l; 
-			cout << main[loop] << endl;
-			if (main[loop] == "[" && x != 2)
-			{
-				cout << "entered" <<endl;
-				mm[loop] = stod(main[loop+1]);
-				blPTR -> setDiameter(mm[loop]);
-				id[loop] = main[loop+2];
-				blPTR -> setID(id[loop]);
-				col[loop] = main[loop+3];
-				blPTR -> setColor(col[loop]);
-				tx[loop] = main[loop+4];
-				blPTR -> setTexture(tx[loop]);
-				blPTR++;
-				x = 2;
-				
-			}
+			getline(stringsFile, line);
+			main[x++] = line;
 		}
-		theFile.close();
+		stringsFile.close();
 
 	}
-//	for (x = 0; x < lines; x++)
-//	{
-//		cout << "array location " << x << main[x]<<"\n";		
-//	}
+	
+	ifstream doubleFile("double.txt");
+	if (doubleFile.is_open())
+	{
+		while(!doubleFile.eof())
+		{
+			getline(doubleFile, t);
+			temp[i++] = t;
+		}
+	}
+	doubleFile.close();
+	do
+	{
+		for (int u = 0; u == count * 4; u++)
+		{
+			cout << "u: " << u <<endl;
+			if(u = 0)
+			{
+				tm =  temp[u-1];
+				tMM = stod (tm);
+				cout << "mm: " << mm[u] <<endl;
+				blPTR -> setDiameter(stod(pusher[u]));
+			}
+			if (u = 1)
+			{
+				tID = main[u-1];
+				cout << "id: " << tID<<endl;
+				blPTR -> setID(tID);
+			}
+			if (u = 2)
+			{
+				tColor = main[u-1];
+				cout << "color: " << tColor<<endl;
+				blPTR -> setColor(tColor);
+			}
+			if (u = 3)
+			{
+				tText = main[u-1];
+				cout << "texture: " << tText <<endl;
+				blPTR -> setTexture(tText);
+			}
+
+			blPTR++;
+			q++;
+		}
+	}while(q < math);
+
 }
 
 int addEntry(BallInfo* blPTR, int count)
@@ -137,6 +168,7 @@ int addEntry(BallInfo* blPTR, int count)
 		cin >> color;
 		cout << "Which texture is the ball? ";
 		cin >> texture;
+		cout << "\n";
 		
 		blPTR -> setDiameter(diameter);
 		blPTR -> setID(ID);
@@ -264,6 +296,23 @@ void printALL(BallInfo* blPTR, int count)
 	}
 }
 
+void findColors(BallInfo* blPTR, int count)
+{
+	string color, compare;
+	int number = 0;
+	cout << "Enter the color that you want to find the number of: ";
+	cin >> color;
+	for (int x = 0; x < count; x++)
+	{
+		compare = blPTR -> getColor();
+		if (compare == color)
+		{
+			number++;
+		}
+	}
+	cout << color << " had " << number << " matches."<<endl;
+}
+
 int main(int argc, char** argv)
 {
 	BallInfo bl[100];
@@ -272,9 +321,9 @@ int main(int argc, char** argv)
 	double mm;
 	int counter = 0;
 	lines = numberOfLines();
-	cout << "Number of lines: " << lines << "\n";
+//	cout << "Number of lines: " << lines << "\n";
 	
-	readFromFile(bl, counter);
+//	readFromFile(bl, counter);
 	
 	do
 	{
@@ -290,6 +339,7 @@ int main(int argc, char** argv)
 
 			case 2:
 			{
+				//readFromFile(bl, counter);
 				printALL(bl, counter);
 			}
 			break;
@@ -297,14 +347,14 @@ int main(int argc, char** argv)
 			case 3:
 			{
 				searchGreaterTen(bl, counter);
-				cls();
+
 			}
 			break;
 			
 			case 4:
 			{
 				searchLessTen(bl, counter);
-				cls();
+
 			}
 			break;
 			
@@ -317,7 +367,7 @@ int main(int argc, char** argv)
 			case 6:
 			{
 				textureSearchRough(bl, counter);
-				cls();
+
 			}
 			break;
 			
@@ -331,7 +381,7 @@ int main(int argc, char** argv)
 			
 			case 8:
 			{
-				readFromFile(bl, counter);
+				findColors(bl, counter);
 			}
 			break;
 			
