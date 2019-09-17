@@ -90,15 +90,11 @@ void printALL(Info* infoPTR, int count, Classes* clsPTR, int cc)
 
 void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 {
-	int choice;
+	int choice, c2;
 	cout << "Chose the class number to assign to the student:"<<endl;
-}
-
-void arrayTest(Classes* clsPTR, int cc)
-{
 	int rf = 0;
 	//result found
-	string classID;
+	string classID, studentName;
 	cout << "Enter a class ID to see all of the details: ";
 	cin >> classID;
 		
@@ -108,6 +104,13 @@ void arrayTest(Classes* clsPTR, int cc)
 		{
 			clsPTR -> print();
 			rf = 1;		
+			cout << "Do you want to add this class to a student? (1 yes or 2 no)";
+			cin >> c2;
+			if  (c2 == 1)
+			{
+				cout << "enter the student you want to add to this class? ";
+				cin >>
+			}
 		}
 		else
 		{
