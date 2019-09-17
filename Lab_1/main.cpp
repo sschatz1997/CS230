@@ -88,6 +88,39 @@ void printALL(Info* infoPTR, int count, Classes* clsPTR, int cc)
 		
 } 
 
+void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
+{
+	int choice;
+	cout << "Chose the class number to assign to the student:"<<endl;
+}
+
+void arrayTest(Classes* clsPTR, int cc)
+{
+	int rf = 0;
+	//result found
+	string classID;
+	cout << "Enter a class ID to see all of the details: ";
+	cin >> classID;
+		
+	for (int x = 0; x < cc; x++)
+	{
+		if (classID == clsPTR -> getClass_ID())
+		{
+			clsPTR -> print();
+			rf = 1;		
+		}
+		else
+		{
+			clsPTR++;
+			rf = 0;
+		}
+	}
+	if (rf == 0)
+	{
+		cout << "\tNO CLASS WAS FOUND\n";
+	}
+}
+
 int main(int arg, char** argv)
 {
 	Info info[100];
@@ -115,13 +148,14 @@ int main(int arg, char** argv)
 			{
 				cout << "How many classes are you entering above the 10 by defualt? ";
 				cin >> noc;
-				noc = noc + 10;
+				noc = noc + 1;//change this to 10 when going to final version
 				CC = classAssign(cls, noc, CC);
 			}
 			break;
 			
 			case 3:
 			{
+				arrayTest(cls, CC);
 			}
 			break;
 			

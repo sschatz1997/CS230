@@ -16,7 +16,7 @@ Classes::Classes()
 	string nof = "";	
 }
 
-void Classes::setClass_N(string CN) { CN = clasN; }
+void Classes::setClass_N(string CN) { clasN = CN; }
 void Classes::setClass_ID(string ClassID) { cid = ClassID; }
 void Classes::setNumOfCredits(string nCreds) { nof = nCreds; }
 
