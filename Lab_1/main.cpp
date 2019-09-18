@@ -17,7 +17,8 @@ int menu()
 		<< "\t 1. Enter students into the DB.\n"
 		<< "\t 2. Enter courses into the DB.\n"
 		<< "\t 3. Assign 4 existing courses for an exitsting student.\n"
-		<< "\t 4. Display a report of classes and students (CURRENT TESTING)\n"
+		<< "\t 4. Display a report of students (CURRENT TESTING)\n"
+		<< "\t 5. Display a report of classes (CURRENT TESTING)\n"
 		<< "\t\t 10. EXIT\n"<<endl; 
 	cin >> x;
 	return x;
@@ -88,15 +89,34 @@ void printALL(Info* infoPTR, int count, Classes* clsPTR, int cc)
 		
 } 
 
+void printStu(Info* infoPTR, int count)
+{
+	for (int x = 0; x < count; x++)
+	{
+		infoPTR -> print();
+		infoPTR++;		
+	}
+}
+
+void printCls(Classes* clsPTR, int cc)
+{
+	for (int y = 0; y < cc; y++)
+	{
+		clsPTR -> print();
+		clsPTR++;	
+	}
+}
+
 void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 {
 	int choice, c2;
+	string classID, studentID;
 	cout << "Chose the class number to assign to the student:"<<endl;
+	cin >> classID;
 	int rf = 0;
 	//result found
-	string classID, studentName;
-	cout << "Enter a class ID to see all of the details: ";
-	cin >> classID;
+//	cout << "Enter a class ID to see all of the details: ";
+
 		
 	for (int x = 0; x < cc; x++)
 	{
@@ -104,13 +124,21 @@ void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 		{
 			clsPTR -> print();
 			rf = 1;		
-			cout << "Do you want to add this class to a student? (1 yes or 2 no)";
-			cin >> c2;
-			if  (c2 == 1)
+
+			cout << "enter the ID student you want to add to this class? ";
+			cin >> studentID;
+			for (int t = 0; t < count; t++)
 			{
-				cout << "enter the student you want to add to this class? ";
-				cin >>
+				if (studentID == infoPTR -> getStu_ID())
+				{
+					cout << "This class will be added to student " << studentID << ".\n";
+					clsPTR -> print();
+					infoPTR -> setClass_ID(clsPTR -> getClass_ID());
+					infoPTR -> setClass_N(clsPTR -> getCourse());
+					infoPTR -> setNumOfCredits(clsPTR -> getNumOfCredits());
+				}
 			}
+		
 		}
 		else
 		{
@@ -158,17 +186,24 @@ int main(int arg, char** argv)
 			
 			case 3:
 			{
-				arrayTest(cls, CC);
+				//arrayTest(cls, CC);
+				assignClasses(info, cls, counter, CC);
 			}
 			break;
 			
 			case 4:
 			{
-				printALL(info, counter, cls, CC);
+				//printALL(info, counter, cls, CC);
+				printStu(info, counter);
 			}
 			break;
 			
-			case 5:{cout<<"EXITING...\n";}break;
+			case 5:
+			{
+					printCls(cls, CC);
+			}		
+			
+			//case 10:{cout<<"EXITING...\n";}break;
 		}
 		
 	}while(choice != 10);

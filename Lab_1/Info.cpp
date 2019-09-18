@@ -24,7 +24,7 @@ void Info::setStu_ID(string stuID) { sid = stuID;}
 void Info::setF_name(string FN) { firstN = FN; }
 void Info::setL_name(string LN) { lastN = LN; }
 void Info::setClass_N(string CN) { CN = clasN; }
-void Info::setCLass_ID(string ClassID) { cid = ClassID; }
+void Info::setClass_ID(string ClassID) { cid = ClassID; }
 void Info::setNumOfCredits(string nCreds) { nof = nCreds; }
 
 string Info::getStu_ID() const { return sid; }
@@ -39,5 +39,16 @@ void Info::print() const {
 		<<"\t Student ID: " << sid << "\n"
 		<<"\t First name: " << firstN << "\n"
 		<<"\t Last name: " << lastN << "\n";
-
+	if(clasN == "")
+		cout << "\t Class name: not entered yet.\n";
+	else
+		cout << "\t Class name: " << clasN << "\n";
+	if(cid == "")
+		cout << "\t Class ID: not entered yet.\n";
+	else
+		cout << "\t Class ID: " << cid << "\n";
+	if(nof == "")
+		cout << "\t Number of Credits: not entered yet.\n";
+	else
+		cout << "\t Number of Credits: " << nof << "\n";
 }

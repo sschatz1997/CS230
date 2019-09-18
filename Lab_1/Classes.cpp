@@ -28,5 +28,5 @@ void Classes::print() const {
 		cout << "\t\t All classes entered: \n"
 			<< "\t course id: " << cid <<"\n"
 			<< "\t course name: " << clasN << "\n"
-			<< "\t number of credits" << nof << "\n";
+			<< "\t number of credits: " << nof << "\n";
 }
