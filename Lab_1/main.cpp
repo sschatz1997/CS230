@@ -152,11 +152,11 @@ void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 	//force the user to move down the list of entered students
 //	do
 //	{
-	for (int x = 0; x < 1; x++)
+	for (int x = 0; x < 4; x++)
 	{
 		if (x == 0)
 		{
-			cout <<"Student1: " << infoPTR -> getStu_ID() << "\n\n";	
+			cout <<"Student " << infoPTR -> getStuID() << " : " << infoPTR -> getStu_ID() << "\n\n";	
 			cout << "Enter the first class: ";
 			cin >> classID;
 			course = returnCourse(clsPTR, cc, classID);
@@ -168,6 +168,27 @@ void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 		
 
 		}
+
+		if (x == 1)
+		{
+			cout << "Student " << infoPTR -> getStu_ID() << " : " 
+
+			infoPTR -> setClassID2(classID);
+			infoPTR -> setClass_N2(course);
+			infoPTR -> setNumOfCredits(noc);
+		}
+
+		if (x == 2)
+		{
+
+
+		}
+
+		if (x == 3)
+		{
+
+		}
+
 		clsPTR++;
 		infoPTR++;
 		/*	switch(x)
