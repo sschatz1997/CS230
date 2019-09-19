@@ -3,7 +3,7 @@
 #include <string>
 #include <cstring>
 #include <cstdio>
-#include <stdlib.H>
+#include <stdlib.h>
 #include <fstream>
 #include "Info.h"
 

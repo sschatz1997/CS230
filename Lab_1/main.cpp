@@ -3,7 +3,7 @@
 #include <string>
 #include <cstring>
 #include <cstdio>
-#include <stdlib.H>
+#include <stdlib.h>
 #include <fstream>
 #include "Info.h"
 #include "Classes.h"
@@ -152,15 +152,17 @@ void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 	//force the user to move down the list of entered students
 //	do
 //	{
-	for (int x = 0; x < 4; x++)
+	for (int x = 0; x < 1; x++)
 	{
 		if (x == 0)
 		{
-			cout <<"Student " << infoPTR -> getStuID() << " : " << infoPTR -> getStu_ID() << "\n\n";	
+			cout <<"Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";	
 			cout << "Enter the first class: ";
 			cin >> classID;
 			course = returnCourse(clsPTR, cc, classID);
+			cout << "course: " << course << endl;
 			noc = returnNOC(clsPTR, cc, classID);
+			cout << "NOC: " << noc << endl;
 			infoPTR -> setClass_ID(classID);
 			infoPTR -> setClass_N(course);
 			infoPTR -> setNumOfCredits(noc);
@@ -171,9 +173,12 @@ void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 
 		if (x == 1)
 		{
-			cout << "Student " << infoPTR -> getStu_ID() << " : " 
-
-			infoPTR -> setClassID2(classID);
+			cout << "Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";
+			cout << "Enter the first class: ";
+			cin >> classID;
+			course = returnCourse(clsPTR, cc, classID);
+			noc = returnNOC(clsPTR, cc, classID);
+			infoPTR -> setClass_ID2(classID);
 			infoPTR -> setClass_N2(course);
 			infoPTR -> setNumOfCredits(noc);
 		}
@@ -364,7 +369,7 @@ int main(int arg, char** argv)
 			
 			case 5:
 			{
-					printCls(cls, CC);
+				printCls(cls, CC);
 			}		
 			
 			//case 10:{cout<<"EXITING...\n";}break;
