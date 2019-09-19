@@ -13,7 +13,8 @@ Classes::Classes()
 {
 	string clasN = "";
 	string cid = "";
-	string nof = "";	
+	string nof = "";
+	string temp = "";
 }
 
 void Classes::setClass_N(string CN) { clasN = CN; }
@@ -29,4 +30,19 @@ void Classes::print() const {
 			<< "\t course id: " << cid <<"\n"
 			<< "\t course name: " << clasN << "\n"
 			<< "\t number of credits: " << nof << "\n";
+}
+
+int Classes::searchClass(string searchCls) const {
+	string temp;
+	temp = searchCls;
+	if (searchCls == clasN)
+	{
+		cout << "yes" << endl;
+		return 1;
+	}
+	else
+	{
+		cout << "no" << endl;
+		return 0;
+	}
 }
