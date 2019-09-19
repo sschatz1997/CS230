@@ -20,9 +20,18 @@ class Info
 		string getStu_ID() const;
 		string getF_name() const;
 		string getL_name() const;
-		string getClass_ID() const;
 		string getCourse() const;
+		string getCourse2() const;
+		string getCourse3() const;
+		string getCourse4() const;
+		string getClass_ID() const;
+		string getClass_ID2() const;
+		string getClass_ID3() const;
+		string getClass_ID4() const;
 		string getNumOfCredits() const;
+		string getNumOfCredits2() const;
+		string getNumOfCredits3() const;
+		string getNumOfCredits4() const;
 		int searchStudent(string searchSID); //this will be done using the students ID
 		
 		//mutators the comments will be what it will set to

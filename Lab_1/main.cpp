@@ -9,6 +9,7 @@
 #include "Classes.h"
 
 using namespace std;
+using std::string;
 
 int menu()
 {
@@ -16,9 +17,9 @@ int menu()
 	cout<< "\t\t ==MAIN MENU==\n"
 		<< "\t 1. Enter students into the DB.\n"
 		<< "\t 2. Enter courses into the DB.\n"
-		<< "\t 3. Assign 4 existing courses for an exitsting student.\n"
-		<< "\t 4. Display a report of students (CURRENT TESTING)\n"
-		<< "\t 5. Display a report of classes (CURRENT TESTING)\n"
+		<< "\t 3. Assign four existing courses for an exitsting student.\n"
+		<< "\t 4. Display a report of students.\n"
+		<< "\t 5. Display a report of classes.\n"
 		<< "\t\t 10. EXIT\n"<<endl; 
 	cin >> x;
 	return x;
@@ -107,14 +108,15 @@ void printCls(Classes* clsPTR, int cc)
 	}
 }
 
-//string searchStudent()
 string returnCourse(Classes* clsPTR, int cc, string id)
 {
+	string returner;
 	for(int x = 0; x < cc; x++)
 	{
 		if(id == clsPTR -> getClass_ID())
 		{
-			return clsPTR -> getCourse();
+			returner = clsPTR -> getCourse();
+			return returner;
 		}
 		else
 			clsPTR++;
@@ -136,189 +138,146 @@ string returnNOC(Classes* clsPTR, int cc, string id)
 		
 }
 
+
+void writeInfo(Info* infoPTR, int count)
+{
+	ofstream outData;
+	outData.open("info.txt", ios::app);
+	for (int x = 0; x < count; x++)
+	{
+		outData << infoPTR -> getStu_ID() << endl;
+		outData << infoPTR -> getF_name() << endl;
+		outData << infoPTR -> getL_name() << endl;
+		outData << infoPTR -> getClass_ID() << endl;
+		outData << infoPTR -> getCourse() << endl;
+		outData << infoPTR -> getNumOfCredits() << endl;
+		outData << infoPTR -> getClass_ID2() << endl;
+		outData << infoPTR -> getCourse2() << endl;
+		outData << infoPTR -> getNumOfCredits2() << endl;
+		outData << infoPTR -> getClass_ID3() << endl;
+		outData << infoPTR -> getCourse3() << endl;
+		outData << infoPTR -> getNumOfCredits3() << endl;
+		outData << infoPTR -> getClass_ID4() << endl;
+		outData << infoPTR -> getCourse4() << endl;
+		outData << infoPTR -> getNumOfCredits4() << endl;
+
+		infoPTR++;
+	}
+	outData.close();
+}
+
+int numberOfLines()
+{
+	int lines = 0;
+	string line;
+	ifstream theFile("strings.txt");
+	while (getline(theFile, line))
+	{
+		lines++;
+	}
+	return lines;
+}
+
+int readFiles(Info* infoPTR)
+{
+	string line;
+	int lines;
+	double sets;
+	lines = numberOfLines();
+	sets = lines / 15;
+	string sid, firstN, lastN, clasN, clasN2, clasN3, clasN4, cid;
+	string cid2, cid3, cid4, nof, nof2, nof3, nof4;
+	int count;
+	ifstream inData ("info.txt");
+	if (inData.is_open() /*&& lines <= 15*/)
+	{
+		while(!inData.eof())
+		{
+				inData >>sid
+					>>firstN
+					>>lastN
+					>>clasN
+					>>cid
+					>>nof
+					>>clasN2
+					>>cid2
+					>>nof2
+					>>clasN3
+					>>cid3
+					>>nof3
+					>>clasN4
+					>>cid4
+					>>nof4;
+				infoPTR -> setStu_ID(sid);
+				infoPTR -> setF_name(firstN);
+				infoPTR -> setL_name(lastN);
+				infoPTR -> setClass_ID(cid);//1
+				infoPTR -> setClass_N(clasN);
+				infoPTR -> setNumOfCredits(nof);
+				infoPTR -> setClass_ID2(cid2);//2
+				infoPTR -> setClass_N2(clasN2);
+				infoPTR -> setNumOfCredits2(nof2);
+				infoPTR -> setClass_ID3(cid3);//3
+				infoPTR -> setClass_N3(clasN3);
+				infoPTR -> setNumOfCredits3(nof3);
+				infoPTR -> setClass_ID4(cid4);//4
+				infoPTR -> setClass_N4(clasN4);
+				infoPTR -> setNumOfCredits4(nof4);
+				count++;
+		}
+	}
+	return count;
+}
+
 void assignClasses(Info* infoPTR, Classes* clsPTR, int count, int cc)
 {
 	int v, choice, c2, loops, check, check2;
 	string course, noc;
 	loops = count * 4;
 	string classID, studentID;
-	//insert a 4x loop here, get the class number 
 	cout << "\t\tThis will loop Dependant how many students you have entered"
 		<< "\t\t thus assigning 4 classes to each student\n";
-
-	//	cout << "Chose the class number to assign to the student:"<<endl;
-	//	cin >> classID;
 	
 	//force the user to move down the list of entered students
-//	do
-//	{
-	for (int x = 0; x < 1; x++)
+
+	for(int x = 0; x < 4; x++)
 	{
-		if (x == 0)
-		{
-			cout <<"Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";	
-			cout << "Enter the first class: ";
-			cin >> classID;
-			course = returnCourse(clsPTR, cc, classID);
-			cout << "course: " << course << endl;
-			noc = returnNOC(clsPTR, cc, classID);
-			cout << "NOC: " << noc << endl;
-			infoPTR -> setClass_ID(classID);
-			infoPTR -> setClass_N(course);
-			infoPTR -> setNumOfCredits(noc);
-		//cout << "course test: " << course << endl;
-		
-
-		}
-
-		if (x == 1)
-		{
-			cout << "Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";
-			cout << "Enter the first class: ";
-			cin >> classID;
-			course = returnCourse(clsPTR, cc, classID);
-			noc = returnNOC(clsPTR, cc, classID);
-			infoPTR -> setClass_ID2(classID);
-			infoPTR -> setClass_N2(course);
-			infoPTR -> setNumOfCredits(noc);
-		}
-
-		if (x == 2)
-		{
-
-
-		}
-
-		if (x == 3)
-		{
-
-		}
-
+		cout <<"Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";	
+		cout << "Enter the first class: ";
+		cin >> classID;
+		course = returnCourse(clsPTR, cc, classID);
+		noc = returnNOC(clsPTR, cc, classID);
+		infoPTR -> setClass_ID(classID);
+		infoPTR -> setClass_N(course);
+		infoPTR -> setNumOfCredits(noc);
+		cout << "Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";
+		cout << "Enter the second class: ";
+		cin >> classID;
+		course = returnCourse(clsPTR, cc, classID);
+		noc = returnNOC(clsPTR, cc, classID);
+		infoPTR -> setClass_ID2(classID);
+		infoPTR -> setClass_N2(course);
+		infoPTR -> setNumOfCredits2(noc);
+		cout << "Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";
+		cout << "Enter the third class: ";
+		cin >> classID;
+		course = returnCourse(clsPTR, cc, classID);
+		noc = returnNOC(clsPTR, cc, classID);
+		infoPTR -> setClass_ID3(classID);
+		infoPTR -> setClass_N3(course);
+		infoPTR -> setNumOfCredits3(noc);
+		cout << "Student " << infoPTR -> getStu_ID() << " : " << infoPTR -> getStu_ID() << "\n";
+		cout << "Enter the fourth class: ";
+		cin >> classID;
+		course = returnCourse(clsPTR, cc, classID);
+		noc = returnNOC(clsPTR, cc, classID);
+		infoPTR -> setClass_ID4(classID);
+		infoPTR -> setClass_N4(course);
+		infoPTR -> setNumOfCredits4(noc);
 		clsPTR++;
 		infoPTR++;
-		/*	switch(x)
-			{
-				case 0:
-				{
-					cout <<"Student1: " << infoPTR -> getStu_ID() << "\n\n";	
-					cout << "Enter the first class: ";
-					cin >> classID;
-					course = returnCourse(clsPTR, cc, classID);
-					noc = returnNOC(clsPTR, cc, classID);
-					infoPTR -> setClass_ID(classID);
-					infoPTR -> setClass_N(course);
-					infoPTR -> setNumOfCredits(noc);
-					//cout << "course test: " << course << endl;
-					
-					clsPTR++;
-					infoPTR++;
-
-										
-				}
-				break;
-				
-/*				case 1:
-				{
-					
-				}
-				break;
-				
-				case 2:
-				{
-					
-				}
-				break;
-				
-				case 3:
-				{
-					
-				}
-				break;*/
 	}
-		
-		//result found
-		
-/*		for (int x = 0; x < cc; x++)
-		{
-			
-			switch(x)
-			{
-				case 0:
-				{
-					if(classID == clsPTR -> getClass_ID())
-					{
-						cout << "Enter the student ID you want to assign this class to: ";
-						cin >> studentID;
-						for(int c = 0; c < count; c++)
-						{
-							infoPTR -> searchStudent(studentID);
-							infoPTR++;
-						}
-					}
-					else
-						clsPTR++;
-				}
-				break;
-				
-				case 1:
-				{
-					if(classID == clsPTR -> getClass_ID())
-					{
-						cout << "Enter the student ID you want to assign this class to: ";
-						cin >> studentID;
-						for(int c = 0; c < count; c++)
-						{
-							infoPTR -> searchStudent(studentID);
-							infoPTR++;
-						}
-					}
-					else
-						clsPTR++;	
-				}
-				break;
-				
-				case 2:
-				{
-					if(classID == clsPTR -> getClass_ID())
-					{
-						cout << "Enter the student ID you want to assign this class to: ";
-						cin >> studentID;
-						for(int c = 0; c < count; c++)
-						{
-							infoPTR -> searchStudent(studentID);
-							infoPTR++;
-						}
-					}
-					else
-						clsPTR++;				
-				}
-				break;
-				
-				case 3:
-				{
-					if(classID == clsPTR -> getClass_ID())
-					{
-						cout << "Enter the student ID you want to assign this class to: ";
-						cin >> studentID;
-						for(int c = 0; c < count; c++)
-						{
-							infoPTR -> searchStudent(studentID);
-							infoPTR++;
-						}
-					}
-					else
-						clsPTR++;				
-				}
-				break;
-			}
-			
-			v++;*/
-		
-//		v++;
-//		clsPTR++;
-//		infoPTR++;
-//	}while(v != 1);
-	//}while(v < loops);
+
 }
 
 int main(int arg, char** argv)
@@ -333,13 +292,14 @@ int main(int arg, char** argv)
 	do
 	{
 		choice = menu();
+	//	counter = readFiles(info);
 		switch (choice)
 		{
 			case 1:
 			{
 				cout << "How many students are you entering above the 4 by defualt? ";
 				cin >> nos;
-				nos = nos + 1;
+				nos = nos + 4;// @final change this to 4 when going to final version
 				counter = studentEntry(info, counter, nos);
 			}
 			break;
@@ -348,7 +308,7 @@ int main(int arg, char** argv)
 			{
 				cout << "How many classes are you entering above the 10 by defualt? ";
 				cin >> noc;
-				noc = noc + 1;//change this to 10 when going to final version
+				noc = noc + 10;// @final change this to 10 when going to final version
 				CC = classAssign(cls, noc, CC);
 			}
 			break;
@@ -356,7 +316,13 @@ int main(int arg, char** argv)
 			case 3:
 			{
 				//arrayTest(cls, CC);
-				assignClasses(info, cls, counter, CC);
+				if(info[0].getF_name() != "" && cls[0].getClass_ID() != "")
+				{
+					assignClasses(info, cls, counter, CC);
+					writeInfo(info, counter);
+				}
+				else
+					cout << "not enough entries to assign to eachother." << endl;
 			}
 			break;
 			
