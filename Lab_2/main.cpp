@@ -16,11 +16,10 @@ int menu()
 {
 	int choice;
 	cout<< "\t\t ==MAIN MENU==\n"
-		<< "\t 1. Enter a name to add to the file.\n"
+		<< "\t 1. Enter a name to add to the file(append).\n"
 		<< "\t 2. Read a name from the file.\n"
-		<< "\t 3. Enter a name to append to the file.\n"
-		<< "\t 4. Enter a name to overwrite all entries in the file\n"
-		<< "\t 5. print all\n"
+		<< "\t 3. Enter a name to overwrite all entries in the file\n"
+		<< "\t 4. print all\n"
 		<< "\t\t 10. EXIT\n"<<endl; 
 	cin >> choice;
 	return choice;
@@ -34,6 +33,7 @@ int getMain(Names* nPTR, int counter)
 	cin >> x;
 	for(int y = 0; x > y; y++)
 	{
+		cout <<"the counter is: " << counter << "\n\n";
 		cout << "Enter the first name: ";
 		cin >> fname;
 		cout << "Enter the last name: ";
@@ -41,7 +41,8 @@ int getMain(Names* nPTR, int counter)
 		
 		nPTR -> setFname(fname);
 		nPTR -> setLname(lname);
-		
+		//http://www.cplusplus.com/reference/string/to_string/
+		nPTR -> defaultWrite(to_string(counter+1),fname,lname);
 		nPTR++;
 		counter++;		
 	}
@@ -49,29 +50,57 @@ int getMain(Names* nPTR, int counter)
 	return counter;	
 } 
 
-void print(Names* nPTR, int counter)
+int overwritePrevious(Names* nPTR, int counter)
 {
-	for(int u = 0; u < counter; u++)
+	string fname, lname;
+	cout <<"the counter is: " << counter << "\n\n";
+	cout << "Enter the first name: ";
+	cin >> fname;
+	cout << "Enter the last name: ";
+	cin >> lname;
+	
+	nPTR -> setFname(fname);
+	nPTR -> setLname(lname);
+	nPTR -> setKey(to_string(1));
+	//this sets the new key to 0 and the
+	nPTR -> overwriteFile(to_string(1),fname,lname);
+	nPTR++;
+	counter++;		
+	
+	return counter;
+}
+
+void searchName(Names* nPTR, int counter, string userInput)
+{
+	int x = 0;
+	int checker = 1;
+	
+//	do
+	for(x; x < counter; x++)
 	{
-		cout << "Entry " << u + 1 << endl;
-		nPTR -> print();
-		nPTR++;		
+		if(userInput == nPTR -> getFname())
+		{
+			cout<< "\t\tThis is the enties from that name: \n";
+			cout << "First name: " << nPTR -> getFname() << endl;
+			cout << "Last name: " << nPTR -> getLname() << "\n\n";
+			checker = 0;
+		//	x = counter;
+		}
+		else
+		{
+			checker = 1;
+			//x++;
+			
+		}
+		nPTR++;
+	}
+//	}while(x < counter or checker != 0);
+	if(checker == 1)
+	{
+		cout <<"That entry does not exist!\n";
 	}
 }
 
-void defaultWrite(Names* nPTR, int counter)
-{
-	ofstream outData;
-	outData.open("info.txt", ios::app);
-	for (int x = 0; x < counter; x++)
-	{
-		outData << "\n" << nPTR -> getFname();
-		outData << " ";
-		outData << nPTR -> getLname() << "\n";
-		nPTR++;
-	}
-	outData.close();
-}
 
 int numberOfLines()
 {
@@ -85,6 +114,28 @@ int numberOfLines()
 	return lines;
 }
 
+int print(Entries* ePTR)
+{
+	int lines;
+	int x = 0;
+	lines = numberOfLines();
+	string array[lines];
+	string test;
+	ifstream theFile("info.txt");
+	while(getline(theFile, test))
+	{
+	//	cout<<test<<endl;
+		array[x] = test;
+		x++;
+	}
+	for(int y = 0; y < lines; y++)
+	{
+		cout << y + 1<< ": " << array[y]<<"\n";
+		ePTR -> setEntries(array[y]);
+		ePTR++;
+	}
+}
+
 int readLineByLine(Entries* ePTR)
 {
 	int lines;
@@ -95,13 +146,13 @@ int readLineByLine(Entries* ePTR)
 	ifstream theFile("info.txt");
 	while(getline(theFile, test))
 	{
-		cout<<test<<endl;
+	//	cout<<test<<endl;
 		array[x] = test;
 		x++;
 	}
 	for(int y = 0; y < lines; y++)
 	{
-		cout << y + 1<< ": " << array[y];
+	//	cout << y + 1<< ": " << array[y]<<"\n";
 		ePTR -> setEntries(array[y]);
 		ePTR++;
 	}
@@ -129,8 +180,10 @@ int splitLinesAdd(Entries* ePTR, int lines, Names* nPTR, int counter)
 					nPTR -> setLname(word);
 					
 				}
-				
-				cout << "\n" << word << " TEST\n";
+				if (c == 2){
+					nPTR -> setKey(word);
+				}
+				//cout << "\n" << word << " TEST\n";
 			}
 			c++;
 			
@@ -143,14 +196,16 @@ int splitLinesAdd(Entries* ePTR, int lines, Names* nPTR, int counter)
 	return counter;
 }
 
-
 int main(int argc, char** argv) {
 	
 	int choice, counter1, counterM, lines;
+	string nameSearch;
 	Names n[100];
 	Entries e[100];
 	lines = numberOfLines();
-	cout << "When this program first ran their was already " << lines << " entries." << endl;
+	cout << "\t\t====================\n";
+	cout << "\tTheir are curently " << lines << " entries." << endl;
+	cout << "\t\t====================\n";
 	
 	readLineByLine(e);
 	
@@ -164,35 +219,37 @@ int main(int argc, char** argv) {
 		{
 			case 1:
 			{
-				counter1 = getMain(n, counterM);
-				counterM = counterM + counter1;
-				defaultWrite(n, counterM);
+			//	cout << "\n\ncounterM " << counterM << endl;
+				counterM = getMain(n, counterM);
+		//		cout << "\n\ncounter1 " << counter1 << endl;	
+			//	counterM =+ counter1;
+			//	cout << "\n\ncounter main: " << counterM << endl;	
+				//defaultWrite(n, counterM);
 			}
 			break;
 			
 			case 2:
 			{
-				
+				cout<<"\t Enter the name you want to search: ";	
+				cin >> nameSearch;
+				searchName(n, counterM, nameSearch);
 			}
 			break;
 			
 			case 3:
 			{
-
+				counterM = 0;
+				counterM = overwritePrevious(n, counterM);
+				
 			}
 			break;
 			
 			case 4:
 			{
-
-			}
-			break;
-			
-			case 5:
-			{
-				print(n, counterM);
+				print(e);
+				//readLineByLine(e);
 			}		
-			
+			break;
 
 		}
 		
