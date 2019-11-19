@@ -9,6 +9,7 @@
 #include <fstream>
 #include "StudentInfo.h"
 #include "Student_list.h"
+#include "Classes.h"
 
 using namespace std;
 
