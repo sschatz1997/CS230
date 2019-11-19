@@ -10,6 +10,7 @@
 #include "StudentInfo.h"
 #include "Student_list.h"
 #include "Classes.h"
+#include "Classes_List.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ int menu()
 	int choice;
 	cout << "\t\t===MAIN MENU==\n"
 		<< "\t1. Enter student full Info.\n"
-		<< "\t2. Add a class to a student.\n"
+		<< "\t2. Add 2 classed to a student.\n"
 		<< "\t3. List a students information(normallly).\n"
 		<< "\t4. List a students information(recursively).\n"
 		<< "\t5.EXIT\n"
@@ -49,22 +50,39 @@ void addStu(Student_List* stuL)
 	stuL -> addStudent(STU);
 }
 
-void printNormal(Student_List* stuL)
+void addClasses(Class_List* cl)
 {
-	cout << "Printing normally: "<<endl;
-	stuL -> normalListPrint();
+	string class1, class2;
+	cout << "Enter the first class: " <<endl;
+	cin >> class1;
+	cout << "Enter the second class: " <<endl;
+	cin >> class2;
+	Classes CLS;
+	CLS.setClasses(class1, class2);
+	cl -> addClass(CLS);
 }
 
-void printRecursivly(Student_List* stuL)
+void printNormal(Student_List* stuL, Class_List* cl)
 {
-	cout << "Printing with recursion: "<<endl;
+	cout << "Printing normally Student: "<<endl;
+	stuL -> normalListPrint();
+	cout << "Classes: "<<endl;
+	cl -> normalPrintC();
+}
+
+void printRecursivly(Student_List* stuL, Class_List* cl)
+{
+	cout << "Printing with recursion Student: "<<endl;
 	stuL -> rePrint();
+	cout << "Classes: "<<endl;
+	cl -> rePrintClasses();
 }
 
 int main(int argc, char** argv) {
 	
 	int choice;
 	Student_List stuList;
+	Class_List clList;
 	
 	do
 	{
@@ -80,19 +98,19 @@ int main(int argc, char** argv) {
 			
 			case 2:
 			{
-				
+				addClasses(&clList);
 			}
 			break;
 			
 			case 3:
 			{
-				printNormal(&stuList);
+				printNormal(&stuList, &clList);
 			}
 			break;
 			
 			case 4:
 			{
-				printRecursivly(&stuList);
+				printRecursivly(&stuList, &clList);
 			}
 			break;
 
