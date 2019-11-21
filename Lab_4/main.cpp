@@ -16,14 +16,6 @@ using namespace std;
 
 int menu()
 {
-	/*
-	student name, id, grade class 1(gc1), grade class 2(gc2), grade class 3(gc3), gpa (calculate ((gc1+gc2+gc3)/3=gpa))
-	add a class max of 6
-	remove a class min of 3
-	remove a student
-	list a student 
-	list all students
-	*/
 	int choice;
 	cout << "\t\t===MAIN MENU==\n"
 		<< "\t1. Enter student full Info.\n"
