@@ -10,6 +10,7 @@
 using namespace std;
 
 typedef list<int> IntegerList1;
+typedef list<string> stringList1;
 
 int menu()
 {
@@ -43,9 +44,18 @@ string searchName()
 	return name;
 }
 
+int searchAge()
+{
+	int age;
+	cout << "What is the age you want to search for: ";
+	cin >> age;
+	return age;
+}
+
 int addAge()
 {
 	int age;
+	cout << "Note: age can not be 0"<<endl;
 	cout<<"What is the age that you want to add to the list: ";
 	cin >> age;
 	return age;
@@ -58,10 +68,11 @@ int main(int argc, char** argv) {
 	list<string> nameTemp;
 	list<int> age;
 	list<int> ageT;
+	list<int> removed;
 	string lastVal;
 	string tempS, temp2, searchN;
-	int tempA;
-	string test[100];
+	int tempA, size;
+	int test[100];
 	
 	int choice;
 	
@@ -87,56 +98,26 @@ int main(int argc, char** argv) {
 			
 			case 3:
 			{
-				string aa;
-				cout<<"enter an age: ";
-				cin>>string;
-				for (std::list<string>::iterator it = age.begin(); it != age.end(); ++it)
-				{
-					if(*it == aa)
-					{
-						cout<<"age found"<<endl;
-					}else{
-					
-					}
-				}
-
-				/*int aa, LV;
-				age.merge(ageT);
-				cout<<"enter an age: ";
-				cin>>aa;
-				for(int x = 0; x < ageT.size(); x++)
-				{
-					LV = ageT.back();
-					if(aa == LV)
-					{
-						cout<<"age found"<<endl;
-					}else{
-						ageT.remove(ageT.size());
-					}
-				}
-				cout << "is c++ small brained?"<<endl;
-				string temp;
-				name.merge(nameTemp);
-				int size, T;
+				std::list<std::string>::iterator stt;
+				name.merge(nameTemp);	
+				string test1;
+				test1 = searchName();
 				size = name.size();
-				searchN = searchName();
-				cout << "size: " << size<<endl;
-				for (int x = 0; x < size; x++)
+				stt = find(name.begin(), name.end(), test1);
+				if(stt != name.end())
 				{
-					cout << "entering the loop\n";
-					lastVal = nameTemp.back();
-					if(lastVal == searchN)
-					{
-						cout << lastVal << "name found!"<< searchN<<endl;
-						
-					}else{
-						nameTemp.erase(nameTemp.size(),);
-					}
-					T = x;
+					cout << "name found" << endl;
+				}else{
+					cout << "name not found" << endl;
 				}
-				if(T == size)
+				/*for (int x = 0; x < size; x++)
 				{
-					cout << "name was not found"<<endl;
+					if(nameTemp.front() == test1)
+					{
+						cout << "name found "<<endl;
+					}else{
+						nameTemp.pop_front();
+					}
 				}*/
 				
 				
@@ -146,15 +127,14 @@ int main(int argc, char** argv) {
 			case 4:
 			{
 				int aa;
-				cout<<"enter an age: ";
-				cin>>aa;
+				aa = searchAge();
 				for (std::list<int>::iterator it = age.begin(); it != age.end(); ++it)
 				{
 					if(*it == aa)
 					{
 						cout<<"age found"<<endl;
 					}else{
-					
+						cout<<"age not found"<<endl;
 					}
 				}
 			}
@@ -162,22 +142,72 @@ int main(int argc, char** argv) {
 
 			case 5:
 			{
-				int size1 = name.size();
-				
-			//	string test1 = std::find(std::begin(name), std::end(name), name);
-			//	cout << "test: " << test1<<endl;
-				
+				std::list<std::string>::iterator stt;
+				name.merge(nameTemp);	
+				string test1;
+				test1 = searchName();
+				size = name.size();
+				stt = find(name.begin(), name.end(), test1);
+				if(stt != name.end())
+				{
+					cout << "name found" << endl;
+				}else{
+					cout << "name not found" << endl;
+				}
+																
 			}
 			break;
 
 			case 6:
+			{
+				int a2;
+				a2 = searchAge();
+				int e = 0;
+				age.sort();
+				for (std::list<int>::iterator it = age.begin(); it != age.end(); ++it)
+				{
+					test[e] = *it;
+					e++;
+					//cout << "test " << *it <<endl;
+				}
+				
+				age.clear();
+				
+				for(int x = 0; x < e; x++)
+				{
+					if(test[x] == a2){
+						test[x] = 0;
+					}
+					if(test[x] != 0)
+					{
+						age.push_back(test[x]);
+					}
+					if(x == e){
+						cout<<"That age was never entered!"<<endl;
+					}
+				//	cout << "array: " << test[x] << endl;
+				}
+				cout << a2 <<" was deleted"<<endl;
+				
+			}
+			break;
+
+			case 7:
+			{
+				std::list<std::string>::iterator stt;
+				cout << name;
+				
+			}
+			break;	
+
+			case 8:
 			{
 				cout<<"==EXITING=="<<endl;
 			}
 			break;			
 		}
 	}
-	while(choice != 7);
+	while(choice != 8);
 	
 	return 0;
 }
