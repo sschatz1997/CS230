@@ -16,32 +16,32 @@ int menu()
 {
 	int choice;
 	cout<<"==MENU==\n"
-		<<"1. Add a name to the list.\n"
+		<<"1. Add a ID to the list.\n"
 		<<"2. Add a age to the list.\n"
-		<<"3. Search for a name.\n"
+		<<"3. Search for a ID.\n"
 		<<"4. Search for a aga.\n"
-		<<"5. Remove a name.\n"
+		<<"5. Remove a ID.\n"
 		<<"6. Remove a age.\n"
 		<<"7. EXIT"<<endl;
 	cin >> choice;
 	return choice;
 }
 
-string addName()
+int addID()
 {
-	string name;
-	cout<<"What is the name that you want to add to the list: ";
-	cin >> name;
-	return name;
+	int ID;
+	cout<<"What is the ID that you want to add to the list: ";
+	cin >> ID;
+	return ID;
 	
 }
 
-string searchName()
+int searchID()
 {
-	string name;
-	cout << "What is the name that you want to seach for: ";
-	cin >> name;
-	return name;
+	int ID;
+	cout << "What is the ID that you want to seach for: ";
+	cin >> ID;
+	return ID;
 }
 
 int searchAge()
@@ -64,13 +64,13 @@ int addAge()
 
 
 int main(int argc, char** argv) {
-	list<string> name;
-	list<string> nameTemp;
+	list<int> ID;
+	list<int> IDTemp;
 	list<int> age;
 	list<int> ageT;
 	list<int> removed;
-	string lastVal;
-	string tempS, temp2, searchN;
+	int lastVal;
+	int tempS, temp2, searchN;
 	int tempA, size;
 	int test[100];
 	
@@ -84,8 +84,8 @@ int main(int argc, char** argv) {
 		{
 			case 1:
 			{
-				tempS = addName();
-				name.push_back(tempS);
+				tempS = addID();
+				ID.push_back(tempS);
 			}
 			break;
 			
@@ -98,29 +98,17 @@ int main(int argc, char** argv) {
 			
 			case 3:
 			{
-				std::list<std::string>::iterator stt;
-				name.merge(nameTemp);	
-				string test1;
-				test1 = searchName();
-				size = name.size();
-				stt = find(name.begin(), name.end(), test1);
-				if(stt != name.end())
+				int aa;
+				aa = searchID();
+				for (std::list<int>::iterator it = ID.begin(); it != ID.end(); ++it)
 				{
-					cout << "name found" << endl;
-				}else{
-					cout << "name not found" << endl;
-				}
-				/*for (int x = 0; x < size; x++)
-				{
-					if(nameTemp.front() == test1)
+					if(*it == aa)
 					{
-						cout << "name found "<<endl;
+						cout<<"ID found"<<endl;
 					}else{
-						nameTemp.pop_front();
+						cout<<"ID not found"<<endl;
 					}
-				}*/
-				
-				
+				}				
 			}
 			break;
 			
@@ -142,72 +130,81 @@ int main(int argc, char** argv) {
 
 			case 5:
 			{
-				std::list<std::string>::iterator stt;
-				name.merge(nameTemp);	
-				string test1;
-				test1 = searchName();
-				size = name.size();
-				stt = find(name.begin(), name.end(), test1);
-				if(stt != name.end())
+				int temp1;
+				int test = 0;
+				cout << "What is the ID that you want to delete? ";
+				cin >> temp1;
+				do
 				{
-					cout << "name found" << endl;
-				}else{
-					cout << "name not found" << endl;
+					for (std::list<int>::iterator it = ID.begin(); it != ID.end(); ++it)
+					{
+						if(*it == temp1)
+						{
+							for (std::list<int>::iterator it2 = ID.begin(); it2 != ID.end(); ++it2)
+							{
+								if(*it2 != temp1)
+								{
+									IDTemp.push_back(*it2);
+								}
+							}						
+							test = 1;
+						}else{
+							//cout<<"ID not found"<<endl;
+						}
+					}		
+				}while(test != 1);
+				if(test == 1)
+				{
+					ID.clear();
+					IDTemp.merge(ID);
 				}
-																
+				IDTemp.clear();			
 			}
 			break;
 
 			case 6:
 			{
-				int a2;
-				a2 = searchAge();
-				int e = 0;
-				age.sort();
-				for (std::list<int>::iterator it = age.begin(); it != age.end(); ++it)
+				int temp1;
+				int test = 0;
+				cout << "What is the Age that you want to delete? ";
+				cin >> temp1;
+				do
 				{
-					test[e] = *it;
-					e++;
-					//cout << "test " << *it <<endl;
-				}
-				
-				age.clear();
-				
-				for(int x = 0; x < e; x++)
-				{
-					if(test[x] == a2){
-						test[x] = 0;
-					}
-					if(test[x] != 0)
+					for (std::list<int>::iterator it = age.begin(); it != age.end(); ++it)
 					{
-						age.push_back(test[x]);
-					}
-					if(x == e){
-						cout<<"That age was never entered!"<<endl;
-					}
-				//	cout << "array: " << test[x] << endl;
-				}
-				cout << a2 <<" was deleted"<<endl;
-				
+						if(*it == temp1)
+						{
+							for (std::list<int>::iterator it2 = age.begin(); it2 != age.end(); ++it2)
+							{
+								if(*it2 != temp1)
+								{
+									ageT.push_back(*it2);
+								}
+							}						
+							test = 1;
+						}else{
+							//cout<<"ID not found"<<endl;
+						}
+					}		
+				}while(test != 1);
+				if(test == 1)
+				{
+					age.clear();
+					ageT.merge(age);
+				}										
 			}
+				
+			
 			break;
 
 			case 7:
-			{
-				std::list<std::string>::iterator stt;
-				cout << name;
-				
-			}
-			break;	
-
-			case 8:
 			{
 				cout<<"==EXITING=="<<endl;
 			}
 			break;			
 		}
 	}
-	while(choice != 8);
+	while(choice != 7);
 	
 	return 0;
 }
