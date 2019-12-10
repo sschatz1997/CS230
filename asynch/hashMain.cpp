@@ -2,297 +2,89 @@
 #include <map>
 #include <stdio.h>
 #include <stdlib.h>
+#include<cstdio>
+#include<cstdlib>
 #include <time.h>
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <unordered_map>
 
+const int VAR = 200;
 //https://www.tutorialspoint.com/cplusplus-program-to-implement-hash-tables
 using namespace std;
 
-//constants
-
-
-const int TABLE_SIZE = 128;
-
-//constants end
-
-class LinkedHashEntry {
-
-private:
-
-      int key;
-
-      int value;
-
-      LinkedHashEntry *next;
-
-public:
-
-      LinkedHashEntry(int key, int value) {
-
-            this->key = key;
-
-            this->value = value;
-
-            this->next = NULL;
-
-      }
-
- 
-
-      int getKey() {
-
-            return key;
-
-      }
-
- 
-
-      int getValue() {
-
-            return value;
-
-      }
-
- 
-
-      void setValue(int value) {
-
-            this->value = value;
-
-      }
-
- 
-
-      LinkedHashEntry *getNext() {
-
-            return next;
-
-      }
-
- 
-
-      void setNext(LinkedHashEntry *next) {
-
-            this->next = next;
-
-      }
-
-};
- 
-
-class HashMap {
-
-private:
-
-      LinkedHashEntry **table;
-
-public:
-
-      HashMap() {
-
-            table = new LinkedHashEntry*[TABLE_SIZE];
-
-            for (int i = 0; i < TABLE_SIZE; i++)
-
-                  table[i] = NULL;
-
-      }
-
- 
-
-      int get(int key) {
-
-            int hash = (key % TABLE_SIZE);
-
-            if (table[hash] == NULL)
-
-                  return -1;
-
-            else {
-
-                  LinkedHashEntry *entry = table[hash];
-
-                  while (entry != NULL && entry->getKey() != key)
-
-                        entry = entry->getNext();
-
-                  if (entry == NULL)
-
-                        return -1;
-
-                  else
-
-                        return entry->getValue();
-
-            }
-
-      }
-
- 
-
-      void put(int key, int value) {
-
-            int hash = (key % TABLE_SIZE);
-
-            if (table[hash] == NULL)
-
-                  table[hash] = new LinkedHashEntry(key, value);
-
-            else {
-
-                  LinkedHashEntry *entry = table[hash];
-
-                  while (entry->getNext() != NULL)
-
-                        entry = entry->getNext();
-
-                  if (entry->getKey() == key)
-
-                        entry->setValue(value);
-
-                  else
-                        entry->setNext(new LinkedHashEntry(key, value));
-
-            }
-
-      }
-
- 
-
-      void remove(int key) {
-
-            int hash = (key % TABLE_SIZE);
-
-            if (table[hash] != NULL) {
-
-                  LinkedHashEntry *prevEntry = NULL;
-
-                  LinkedHashEntry *entry = table[hash];
-
-                  while (entry->getNext() != NULL && entry->getKey() != key) {
-
-                        prevEntry = entry;
-
-                        entry = entry->getNext();
-
-                  }
-
-                  if (entry->getKey() == key) {
-
-                        if (prevEntry == NULL) {
-
-                             LinkedHashEntry *nextEntry = entry->getNext();
-
-                             delete entry;
-
-                             table[hash] = nextEntry;
-
-                        } else {
-
-                             LinkedHashEntry *next = entry->getNext();
-
-                              delete entry;
-
-                             prevEntry->setNext(next);
-
-                        }
-
-                  }
-
-            }
-
-      }
-
- 
-
-      ~HashMap() {
-
-            for (int i = 0; i < TABLE_SIZE; i++)
-
-                  if (table[i] != NULL) {
-
-                        LinkedHashEntry *prevEntry = NULL;
-
-                        LinkedHashEntry *entry = table[i];
-
-                        while (entry != NULL) {
-
-                             prevEntry = entry;
-
-                             entry = entry->getNext();
-
-                             delete prevEntry;
-
-                        }
-
-                  }
-
-            delete[] table;
-
-      }
-
-};
-
-
-/*
-class userInput {
-	private:
-		int key1;
-		int value1;
-	
+class hashEntry{
 	public:
-		hashE(int key1, int value1)	//hash entry
-		{
-			this->key1 = key1;
-			this->value1 = value1;
+		int a;
+		int x;
+		hashEntry(int a, int x){
+			this->a = a;
+			this->x = x;
 		}
-	
-	int getKey1()
-	{
-		return key1;	
-	}	
-	
-	int getValue1()
-	{
-		return value1;
-	}
+};
+
+class hashMap{
+	private:
+		hashEntry **t;
+	public:
+		hashTable(){
+			t = new hashEntry * [VAR];
+			for (int i = 0; i<VAR; i++)
+			{
+				t[i] = NULL;
+			}
+		}
 		
+		int hashing(int a)
+		{
+			return a % VAR;
+		}
+		
+		void insert(int a, int x)
+		{
+			int q = hashing(a);
+			while(t[q] != NULL && t[q]->a != x)
+			{
+				q = hashing(q + 1);
+			}
+			if(t[q] != NULL)
+				delete t[q];
+			t[q] = new hashEntry(a, x);
+		}
+		
+		int search(int x)
+		{
+			int q = hashing(x);
+			while(t[q] != NULL && t[q]->a != x)
+			{
+				q = hashing(q + 1);
+			}
+			if(t[q] != NULL)
+				return -1;
+			else
+				return t[q]->x;	
+		}
 };
 
-class hashMap1{
-	
-};
-
-/*int hash(const char* str)
+int menu()
 {
-	int hash = 404;
 	int c;
-	
-	while(*str != '\0')
-	{
-		hash = ((hash << 4) + (int)(*str)) % MAX_TABLE;
-	}
-	
-	return hash % MAX_TABLE
+	cout << "==MAIN MENU=="<<endl;
+	cout << "enter a value: ";
+	cin  >> c;
+	return c;
 }
-*/
 
 int main(int argc, char** argv) 
 {
-/*string three, four;
-	unordered_map<string, string> hashTable;
-	hashTable.emplace("one", "two");
-	cout << "Enter two strings ";
-	cin>>three, four;
-	hashTable.emplace(three, four);
-	cout << "one + one = " << hashTable["one"] <<endl;	
-	cout << "test: " << hashTable[three]<<endl;*/
-
-	HashMap.put(69,420);
-	cout << HashMap.get(69) <<endl; 
+	hashMap hash1;
+	int entry1, entry2;
+	entry1 = menu();
+	entry2 = menu();
+	hash1.insert(entry1, entry2);
+	
+	cout << "key: " << entry2 << " value: " << hash1.search(entry1) << endl;
 
 	
 	return 0;
