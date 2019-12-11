@@ -88,5 +88,5 @@ int main(int argc, char** argv)
 	cout << ": ";
 	cin >> userInput3;
 	linSearch(g1, userInput3, sizeOfVec);
-
+	return 0;
 }
