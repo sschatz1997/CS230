@@ -24,6 +24,6 @@ int main(int argc, char** argv)
 	root->left = newNode(8);
 	(*root).right = newNode(3);
 	root->left->left = newNode(823);
-	cout << root->left->data;
+	cout << root->left->left->data;
 	return 0;
 }
